@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="java.util.List" />
+        <import type="kingson09.architecturelab.model.BannerItem" />
+        <variable
+            name="bannerItems"
+            type="List&lt;BannerItem&gt;"/>
+    </data>
+    <com.youth.banner.Banner
+        android:id="@+id/convenientBanner"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        app:imgs="@{bannerItems}"
+        app:is_auto_play="true"/>
+</layout>
