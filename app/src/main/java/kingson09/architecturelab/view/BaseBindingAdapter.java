@@ -13,11 +13,20 @@ import android.view.ViewGroup;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
-public class BaseBindingAdapter<T> extends BaseQuickAdapter<T, BaseViewHolder> {
+public class BaseBindingAdapter<T> extends BaseQuickAdapter<T, BaseViewHolder> implements IRender {
   private BindView bindView;
+  private List<T> bindingData;
 
   public BaseBindingAdapter(@LayoutRes int layoutResId, @Nullable List<T> data) {
-    super(layoutResId, data);
+    super(layoutResId);
+    this.bindingData = data;
+    render();
+  }
+
+  public void render() {
+    if (this.bindingData != null) {
+      replaceData(bindingData);
+    }
   }
 
   public BaseBindingAdapter(@Nullable List<T> data) {

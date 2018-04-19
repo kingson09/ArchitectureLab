@@ -32,7 +32,6 @@
                 android:background="@android:color/white"
                 android:clipToPadding="false"
                 android:overScrollMode="never"
-                app:banner_state="@{hallViewModel.bannerState}"
                 app:list_state="@{hallViewModel.movieListState}"
                 tools:listitem="@layout/listitem_movie_item"/>
             <com.scwang.smartrefresh.layout.footer.ClassicsFooter

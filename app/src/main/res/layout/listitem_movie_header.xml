@@ -2,16 +2,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <import type="java.util.List" />
-        <import type="kingson09.architecturelab.model.BannerItem" />
         <variable
-            name="bannerItems"
-            type="List&lt;BannerItem&gt;"/>
+            name="hallViewModel"
+            type="kingson09.architecturelab.viewmodel.HallViewModel"/>
     </data>
-    <com.youth.banner.Banner
+    <kingson09.architecturelab.view.BaseBindingBanner
         android:id="@+id/convenientBanner"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        app:imgs="@{bannerItems}"
+        app:banner_state="@{hallViewModel.bannerState}"
+        app:imgs="@{hallViewModel.bannerList}"
         app:is_auto_play="true"/>
 </layout>

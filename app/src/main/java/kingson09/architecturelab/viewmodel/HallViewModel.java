@@ -13,6 +13,7 @@ import kingson09.architecturelab.model.Movie;
 import kingson09.architecturelab.presenter.HallPresenter;
 import kingson09.architecturelab.view.bindingAttrs.states.BannerState;
 import kingson09.architecturelab.view.bindingAttrs.states.ListViewState;
+
 /*
 ing和state后缀的属性都类似于reactJs的state，代表可变状态,其他属性类似于props
  */
@@ -73,7 +74,8 @@ public class HallViewModel extends BaseObservable {
   }
 
   public void setMovies(ArrayList<Movie> movies) {
-    this.movies=movies;
+    this.movies.clear();
+    this.movies.addAll(movies);
   }
 
   public ArrayList<BannerItem> getBannerList() {
