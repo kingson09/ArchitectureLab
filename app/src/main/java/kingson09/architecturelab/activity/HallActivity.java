@@ -1,7 +1,6 @@
 package kingson09.architecturelab.activity;
 
 import android.content.Context;
-import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
@@ -14,21 +13,17 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
+import kingson09.architecturelab.BR;
 import kingson09.architecturelab.R;
 import kingson09.architecturelab.databinding.ActivityPracticeBannerBinding;
 import kingson09.architecturelab.databinding.ListitemMovieHeaderBinding;
-import kingson09.architecturelab.databinding.ListitemMovieItemBinding;
 import kingson09.architecturelab.model.BannerItem;
 import kingson09.architecturelab.model.Movie;
-import kingson09.architecturelab.utils.BaseComponent;
 import kingson09.architecturelab.view.BaseBindingAdapter;
 import kingson09.architecturelab.view.BaseBindingBanner;
-import kingson09.architecturelab.view.bindingAttrs.states.BannerState;
-import kingson09.architecturelab.view.bindingAttrs.states.ListViewState;
 import kingson09.architecturelab.viewmodel.HallViewModel;
 
 /**
@@ -57,13 +52,8 @@ public class HallActivity extends AppCompatActivity {
     final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
     final RefreshLayout refreshLayout = (RefreshLayout) findViewById(R.id.refreshLayout);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    BaseBindingAdapter mAdapter = new BaseBindingAdapter(R.layout.listitem_movie_item, hallViewModel.getMovies());
-    mAdapter.setOnBindViewHolder(new BaseBindingAdapter.BindView<Movie>() {
-      @Override
-      public void onBindViewHolder(ViewDataBinding b, Movie item) {
-        ((ListitemMovieItemBinding) b).setMovie(item);
-      }
-    });
+    BaseBindingAdapter mAdapter =
+        new BaseBindingAdapter(R.layout.listitem_movie_item, hallViewModel.getMovies(), BR.movie);
     ListitemMovieHeaderBinding headerBinding =
         DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.listitem_movie_header, recyclerView, false);
     BaseBindingBanner banner = (BaseBindingBanner) ((ViewDataBinding) headerBinding).getRoot();

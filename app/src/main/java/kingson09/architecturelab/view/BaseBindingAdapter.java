@@ -5,6 +5,7 @@ import java.util.List;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +15,13 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 public class BaseBindingAdapter<T> extends BaseQuickAdapter<T, BaseViewHolder> implements IRender {
-  private BindView bindView;
   private List<T> bindingData;
+  private int variableId;
 
-  public BaseBindingAdapter(@LayoutRes int layoutResId, @Nullable List<T> data) {
+  public BaseBindingAdapter(@LayoutRes int layoutResId, @Nullable List<T> data,@NonNull int variableId) {
     super(layoutResId);
     this.bindingData = data;
+    this.variableId=variableId;
     render();
   }
 
@@ -27,14 +29,6 @@ public class BaseBindingAdapter<T> extends BaseQuickAdapter<T, BaseViewHolder> i
     if (this.bindingData != null) {
       replaceData(bindingData);
     }
-  }
-
-  public BaseBindingAdapter(@Nullable List<T> data) {
-    this(0, data);
-  }
-
-  public BaseBindingAdapter(@LayoutRes int layoutResId) {
-    this(layoutResId, null);
   }
 
   @Override
@@ -52,16 +46,8 @@ public class BaseBindingAdapter<T> extends BaseQuickAdapter<T, BaseViewHolder> i
 
   @Override
   protected void convert(BaseViewHolder viewHolder, T item) {
-    bindView.onBindViewHolder(((BaseBindingViewHolder) viewHolder).getBinding(), item);
+    ((BaseBindingViewHolder) viewHolder).getBinding().setVariable(variableId,item);
     ((BaseBindingViewHolder) viewHolder).getBinding().executePendingBindings();
-  }
-
-  public interface BindView<T> {
-    void onBindViewHolder(ViewDataBinding b, T item);
-  }
-
-  public void setOnBindViewHolder(BindView bindView) {
-    this.bindView = bindView;
   }
 
   private void bindViewClickListener(final BaseViewHolder baseViewHolder) {
