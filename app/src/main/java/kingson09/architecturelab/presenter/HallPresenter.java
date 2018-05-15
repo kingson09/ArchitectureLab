@@ -19,8 +19,8 @@ import kingson09.architecturelab.model.BannerItem;
 import kingson09.architecturelab.model.Movie;
 import kingson09.architecturelab.repository.HallInfoRepository;
 import kingson09.architecturelab.repository.PeriodInfoRepository;
-import kingson09.architecturelab.view.bindingAttrs.states.BannerState;
-import kingson09.architecturelab.view.bindingAttrs.states.ListViewState;
+import kingson09.architecturelab.view.binding.state.BannerState;
+import kingson09.architecturelab.view.binding.state.ListViewState;
 import kingson09.architecturelab.viewmodel.HallViewModel;
 
 import static android.arch.lifecycle.Lifecycle.State.DESTROYED;
@@ -60,7 +60,7 @@ public class HallPresenter extends Observable.OnPropertyChangedCallback implemen
     this.hallViewModel.addOnPropertyChangedCallback(this);
     owner.getLifecycle().addObserver(this);
     HallInfoRepository.getRepo().getHallInfo().observe(owner, hallInfoObserver);
-    PeriodInfoRepository.getRepo().getPeriodsInfo().observe(owner, periodsInfoObserver);
+    PeriodInfoRepository.getRepo().getPeriodsInfo().observe(periodsInfoObserver);
   }
 
 

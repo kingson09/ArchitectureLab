@@ -11,19 +11,24 @@ import kingson09.architecturelab.BR;
 import kingson09.architecturelab.model.BannerItem;
 import kingson09.architecturelab.model.Movie;
 import kingson09.architecturelab.presenter.HallPresenter;
-import kingson09.architecturelab.view.bindingAttrs.states.BannerState;
-import kingson09.architecturelab.view.bindingAttrs.states.ListViewState;
+import kingson09.architecturelab.view.binding.state.BannerState;
+import kingson09.architecturelab.view.binding.state.ListViewState;
 
 /*
 ing和state后缀的属性都类似于reactJs的state，代表可变状态,其他属性类似于props
  */
 public class HallViewModel extends BaseObservable {
+  private IHallBind iHallBind;
   private boolean loading;
   private boolean refreshing;
   private int movieListState = ListViewState.LIST_STATE_EMPTY;
   private int bannerState = BannerState.BANNER_STATE_EMPTY;
   private ArrayList<Movie> movies = new ArrayList();
   private ArrayList<BannerItem> bannerList = new ArrayList();
+
+  public HallViewModel(IHallBind iHallBind) {
+    this.iHallBind = iHallBind;
+  }
 
   @Bindable
   public boolean getLoading() {
@@ -94,6 +99,15 @@ public class HallViewModel extends BaseObservable {
   public void clearMovies() {
     setMovies(new ArrayList<Movie>());
   }
+  public void bind(){
+    bindList();
+    bindBanner();
+  }
+  public void bindBanner() {
+    iHallBind.bindBanner(BR.hallViewModel, this);
+  }
 
-
+  public void bindList() {
+    iHallBind.bindList(BR.movie, this.movies);
+  }
 }

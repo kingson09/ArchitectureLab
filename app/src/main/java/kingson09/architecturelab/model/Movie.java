@@ -2,10 +2,12 @@ package kingson09.architecturelab.model;
 
 import android.databinding.ObservableField;
 
+import kingson09.architecturelab.R;
 import kingson09.architecturelab.bean.MovieInfo;
 import kingson09.architecturelab.bean.Period;
+import kingson09.architecturelab.view.binding.IModel;
 
-public class Movie {
+public class Movie implements IModel {
   public String id;
   public String actors;
   public String filmName;
@@ -29,4 +31,8 @@ public class Movie {
     this.period.set("" + period.periodTime);
   }
 
+  @Override
+  public int layoutId() {
+    return R.layout.listitem_movie_item;
+  }
 }

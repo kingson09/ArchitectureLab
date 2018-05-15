@@ -12,5 +12,5 @@
         android:layout_height="150dp"
         app:banner_state="@{hallViewModel.bannerState}"
         app:imgs="@{hallViewModel.bannerList}"
-        app:is_auto_play="true"/>
+        app:is_auto_play="false"/>
 </layout>

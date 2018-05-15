@@ -11,4 +11,6 @@ public class BannerItem {
     this.pic = pic;
     this.title = title;
   }
+
+
 }

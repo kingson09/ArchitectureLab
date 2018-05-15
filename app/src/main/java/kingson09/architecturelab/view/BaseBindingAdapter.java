@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -13,16 +12,25 @@ import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.util.MultiTypeDelegate;
 
-public class BaseBindingAdapter<T> extends BaseQuickAdapter<T, BaseViewHolder> implements IRender {
+import kingson09.architecturelab.view.binding.IModel;
+
+public class BaseBindingAdapter<T extends IModel> extends BaseQuickAdapter<T, BaseViewHolder> implements IRender {
   private List<T> bindingData;
   private int variableId;
 
-  public BaseBindingAdapter(@LayoutRes int layoutResId, @Nullable List<T> data,@NonNull int variableId) {
-    super(layoutResId);
+  public BaseBindingAdapter(@Nullable List<T> data, @NonNull int variableId) {
+    super(null);
     this.bindingData = data;
-    this.variableId=variableId;
+    this.variableId = variableId;
     render();
+    setMultiTypeDelegate(new MultiTypeDelegate<T>() {
+      @Override
+      protected int getItemType(T t) {
+        return t.layoutId();
+      }
+    });
   }
 
   public void render() {
@@ -37,7 +45,7 @@ public class BaseBindingAdapter<T> extends BaseQuickAdapter<T, BaseViewHolder> i
       return super.onCreateViewHolder(viewGroup, viewType);
     }
     ViewDataBinding binding =
-        DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), mLayoutResId, viewGroup, false);
+        DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), viewType, viewGroup, false);
     BaseBindingViewHolder baseViewHolder = new BaseBindingViewHolder(binding.getRoot());
     baseViewHolder.setAdapter(this);
     bindViewClickListener(baseViewHolder);
@@ -46,7 +54,7 @@ public class BaseBindingAdapter<T> extends BaseQuickAdapter<T, BaseViewHolder> i
 
   @Override
   protected void convert(BaseViewHolder viewHolder, T item) {
-    ((BaseBindingViewHolder) viewHolder).getBinding().setVariable(variableId,item);
+    ((BaseBindingViewHolder) viewHolder).getBinding().setVariable(variableId, item);
     ((BaseBindingViewHolder) viewHolder).getBinding().executePendingBindings();
   }
 

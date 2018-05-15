@@ -1,5 +1,7 @@
 package kingson09.architecturelab.activity;
 
+import java.util.List;
+
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -12,35 +14,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
-import kingson09.architecturelab.BR;
 import kingson09.architecturelab.R;
 import kingson09.architecturelab.databinding.ActivityPracticeBannerBinding;
-import kingson09.architecturelab.databinding.ListitemMovieHeaderBinding;
 import kingson09.architecturelab.model.BannerItem;
 import kingson09.architecturelab.model.Movie;
 import kingson09.architecturelab.view.BaseBindingAdapter;
 import kingson09.architecturelab.view.BaseBindingBanner;
 import kingson09.architecturelab.viewmodel.HallViewModel;
+import kingson09.architecturelab.viewmodel.IHallBind;
 
 /**
  * 广告轮播-Banner
  */
 @SuppressWarnings("ALL")
-public class HallActivity extends AppCompatActivity {
+public class HallActivity extends AppCompatActivity implements IHallBind {
 
   private BaseBindingAdapter<Movie> mAdapter;
   private HallViewModel hallViewModel;
+  private RecyclerView recyclerView;
+  private boolean start = true;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    hallViewModel = new HallViewModel();
     ActivityPracticeBannerBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_practice_banner);
-    hallViewModel.observer(this);
     final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     toolbar.setNavigationOnClickListener(new View.OnClickListener() {
       @Override
@@ -48,27 +47,46 @@ public class HallActivity extends AppCompatActivity {
         finish();
       }
     });
-
-    final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-    final RefreshLayout refreshLayout = (RefreshLayout) findViewById(R.id.refreshLayout);
+    recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    BaseBindingAdapter mAdapter =
-        new BaseBindingAdapter(R.layout.listitem_movie_item, hallViewModel.getMovies(), BR.movie);
-    ListitemMovieHeaderBinding headerBinding =
+    hallViewModel = new HallViewModel(this);
+    binding.setHallViewModel(hallViewModel);
+    hallViewModel.bind();
+    hallViewModel.observer(this);
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    System.out.println("HallActivity onResume");
+  }
+  @Override
+  protected void onStop() {
+    super.onStop();
+    System.out.println("HallActivity onStop");
+  }
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    start = false;
+  }
+
+  @Override
+  public void bindBanner(int bindId, Object value) {
+    ViewDataBinding headerBinding =
         DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.listitem_movie_header, recyclerView, false);
-    BaseBindingBanner banner = (BaseBindingBanner) ((ViewDataBinding) headerBinding).getRoot();
+    BaseBindingBanner banner = (BaseBindingBanner) headerBinding.getRoot();
     banner.setImageLoader(new GlideImageLoader());
-    banner.setOnBannerListener(new OnBannerListener() {
-      @Override
-      public void OnBannerClick(int position) {
-        //HallInfoRepository.getRepo().loadHallInfo();
-      }
-    });
-    headerBinding.setHallViewModel(hallViewModel);
+    headerBinding.setVariable(bindId, value);
     mAdapter.addHeaderView(banner);
+  }
+
+  @Override
+  public void bindList(int bindId, Object value) {
+    mAdapter = new BaseBindingAdapter((List) value, bindId);
     recyclerView.setAdapter(mAdapter);
     mAdapter.openLoadAnimation();
-    binding.setHallViewModel(hallViewModel);
+
   }
 
 

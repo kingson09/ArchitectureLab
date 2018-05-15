@@ -49,13 +49,13 @@
                       android:minWidth="100dp"
                       android:text="@{movie.actors}"
                       tools:background="#fff0f0f0"/>
-            <TextView android:id="@+id/lmi_period"
-                      style="@style/AppTheme.Label"
-                      android:layout_marginTop="@dimen/padding_common_d"
-                      android:minWidth="100dp"
-                      android:text="@{movie.period}"
-                      android:textColor="@android:color/holo_red_light"
-                      tools:background="#fff0f0f0"/>
+            <kingson09.architecturelab.utils.MyView android:id="@+id/lmi_period"
+                                                    style="@style/AppTheme.Label"
+                                                    android:layout_marginTop="@dimen/padding_common_d"
+                                                    android:minWidth="100dp"
+                                                    android:text="@{movie.period}"
+                                                    android:textColor="@android:color/holo_red_light"
+                                                    tools:background="#fff0f0f0"/>
         </LinearLayout>
 
     </LinearLayout>
